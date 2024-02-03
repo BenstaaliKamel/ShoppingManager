@@ -1,0 +1,40 @@
+name: Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+
+  ci:
+    if: github.repository == 'redhabouzidi/Cash_manager'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+  cd:
+    needs: ci
+    runs-on: ubuntu-latest
+    steps:
+      - name: Creating ssh items
+        run: |
+          # SSH into your Google Cloud VM
+          
+          mkdir ~/.ssh
+          touch ~/.ssh/id_rsa.pub
+          echo "${{ secrets.SECRET_PUB_SSH_KEY}}" > ~/.ssh/id_rsa.pub
+          chmod 600 ~/.ssh/id_rsa.pub
+          touch ~/.ssh/id_rsa
+          echo "${{ secrets.SECRET_SSH_KEY}}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+      - name: pulling the code
+        run: |
+          ssh -o StrictHostKeyChecking=no reda@34.125.87.139 'sudo rm -r Cash_manager
+          git clone git@github.com:redhabouzidi/Cash_manager.git'
+      - name: launching the app
+        run: |
+          ssh -o StrictHostKeyChecking=no reda@34.125.87.139 'cd Cash_manager
+          sudo docker-compose up -d --build'
+        
