@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">cash_manager_mobile</string>
+    <string name="title_activity_main">cash_manager_mobile</string>
+    <string name="package_name">com.cash_manager.api</string>
+    <string name="custom_url_scheme">com.cash_manager.api</string>
+</resources>

@@ -1,0 +1,64 @@
+version: "3.3"
+
+services:
+
+  database:
+    image: postgres:alpine
+    restart: always
+    ports:
+      - "${PGPORTDB}:${PGPORTDB}"
+    volumes:
+      - database:/var/lib/postgresql
+    environment:
+      POSTGRES_USER: ${PGUSER}
+      POSTGRES_PASSWORD: ${PGPASSWORD}
+      POSTGRES_DB: ${PGDATABASE}
+    command:
+      - -p ${PGPORTDB}
+  bankdatabase:
+    image: postgres:alpine
+    restart: always
+    ports:
+      - "${PGPORTBANKDB}:${PGPORTBANKDB}"
+    volumes:
+      - bankdatabase:/var/lib/postgresql
+    environment:
+      POSTGRES_USER: ${PGUSERBANK}
+      POSTGRES_PASSWORD: ${PGPASSWORDBANK}
+      POSTGRES_DB: ${PGDATABASEBANK}
+    command:
+      - -p ${PGPORTBANKDB}
+  api:
+    build:
+      context: ./api
+    ports:
+      - "${PGPORTAPI}:${PGPORTAPI}"
+    volumes:
+      - api:/root/.m2
+      - api-image:/api/src/assets
+    depends_on:
+      - database
+    env_file:
+      - .env
+  bank:
+    build:
+      context: ./banque
+    ports:
+      - "${PGPORTBANK}:${PGPORTBANK}"
+    volumes:
+      - bank:/root/.m2
+    depends_on:
+      - bankdatabase
+    env_file:
+      - .env
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "${FRONTPORT}:${FRONTPORT}"
+volumes:
+  bankdatabase:
+  database:
+  bank:
+  api:
+  api-image:

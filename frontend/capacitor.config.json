@@ -1,0 +1,8 @@
+{
+  "appId": "com.cash_manager.api",
+  "appName": "cash_manager_mobile",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "http"
+  }
+}
