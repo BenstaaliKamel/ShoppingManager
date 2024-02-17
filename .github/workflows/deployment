@@ -1,4 +1,4 @@
-name: Deployment
+alname: Deployment
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 jobs:
 
   ci:
-    if: github.repository == 'redhabouzidi/Cash_manager'
+    if: github.repository == 'BenstaaliKamelouzidi/Cash_manager'
     runs-on: ubuntu-latest
 
     steps:
